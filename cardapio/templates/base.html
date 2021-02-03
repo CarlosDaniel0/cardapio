@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="{% static 'fontawesome_free/js/all.min.js' %}"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css"
+    integrity="sha512-+WF6UMXHki/uCy0vATJzyA9EmAcohIQuwpNz0qEO+5UeE5ibPejMRdFuARSrl1trs3skqie0rY/gNiolfaef5w=="
+    crossorigin="anonymous" />
+  <!-- <link rel="stylesheet" href="{% static 'css/styles.css' %}"> -->
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+  <title>{% block title %} {% endblock %}</title>
+  <Style>
+      .menu_lateral {
+        z-index: 1;
+        transition: ease-in-out 0.3s;
+        overflow: hidden;
+      }
+
+      @media (max-width: 720px) {
+        .menu_lateral {
+          transform: translateX(-100%);
+        }
+      }
+  </Style>
+</head>
+<body>
+</body>
+<header>
+  <nav class='bg-red-600 py-4'>
+    <a href="/"><img class="inline-block md:w-1/5 w-1/2" src="{% static 'img/logo.png' %}" alt="" srcset=""></a>
+    <span onclick="ativar()" class='cursor-pointer float-right md:invisible md:inline-block visible block '><i class="fas fa-bars text-2xl text-white mr-4"></i></span>
+    <div class="md:p-3 p-12 md:mt-0 p-1 md:m-1 absolute md:relative md:inline-block md:float-right menu_lateral bg-red-600">
+      <a class="text-white text-3xl p-6 md:p-1 md:text-xl mx-2 block md:inline-block" href='/'>Início</a>
+      <a class="text-white text-3xl p-6 md:p-1 md:text-xl mx-2 block md:inline-block carrinho" href="/carrinho"><span class="mr-2">Carrinho</span><span class='contador'></span></a>
+      <a class="text-white text-3xl p-6 md:p-1 md:text-xl mx-2 block md:inline-block" href='/contato'>Contato</a>
+      <a class="text-white text-3xl p-6 md:p-1 md:text-xl mx-2 block md:inline-block" href='/sobre'>Sobre</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <!-- <div class="message p-4 font-bold rounded text-center"></div> -->
+  {% block content %}
+  {% endblock content %}
+</main>
+<footer>
+  <div class="bg-red-600 py-8 m-0 mb-0 w-full">
+    <p class="text-center text-white">
+      Burger Lanche © 2020 - Todos os direitos reservados
+    </p>
+  </div>
+</footer>
+<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+<script>
+    $(function () {
+      const getQuantidade = () =>  {
+        $.ajax({
+        url: '/carrinho/quantidade/',
+          method: 'POST',
+          success: (data) => {
+            console.log(data)
+            const quantidade = data
+            if (quantidade['quantidade'] != 0) {
+              const div = document.querySelector('.contador')
+              div.className = 'inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-green-600 rounded-full contador'
+              div.innerHTML = quantidade['quantidade']
+            }
+          }
+      })}
+      // Adicionar item no carrinho
+      // Pega todos os forms e executa um for each
+      getQuantidade()
+      $('.add').each(function() {
+        // Altera o Contexto
+        $(this).bind("submit", function(event) {
+          const message = document.querySelector('.message')
+
+          event.preventDefault()
+          const id = event.target.id.value
+          const quantidade = event.target.quantidade.value
+
+          $.ajax({
+          url: `/carrinho/add/`,
+          method: 'POST',
+          data: {
+            'id': id,
+            'quantidade': quantidade
+            },
+          success: (data) => {
+            //message.innerHTML = 'Item adicionado com sucesso!'
+            getQuantidade()
+          }
+          })
+        })
+      })
+
+      // Remover Item no carrinho
+      $('.remove').each(function() {
+          $(this).bind("submit", function(event) {
+            event.preventDefault();
+            const id = event.target.id.value
+            $.ajax({
+              url: '/carrinho/remove/',
+              method: 'POST',
+              data: {
+                'id': id
+              },
+              success: (data) => {
+                location.reload()
+                getQuantidade()
+              }
+            })
+          })
+        })
+    });
+    
+  function ativar() {
+    const div = document.querySelector('.menu_lateral');
+    
+    if (div.style.transform == 'translateX(0%)') {
+      //div.style.display = 'inline-block'
+      div.style.transform = 'translateX(-100%)'
+    } else {
+      div.style.transform = 'translateX(0%)'
+      //div.style.display = 'none'
+    }
+  }
+</script>
+</html>

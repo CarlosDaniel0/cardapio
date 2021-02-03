@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Cardápio{% endblock %}
+{% block content %}
+<div class="container mx-auto flex flex-wrap">
+  {% for i in items %}
+  <div style='width: 17rem; min-height: 360px' class="rounded-2xl shadow relative md:inline-block mx-auto md:mx-5 my-5">
+      <img class="rounded-t-2xl" src='/media/{{ i.imagem }}' alt='{{ i.nome }}' />
+      <div class="text-center">
+        <a href="/produto/{{ i.id }}">
+          <h1 class="text-xl my-2 hover:underline">{{ i.nome }}</h1>
+        </a>
+        <span class="font-bold my-2 block">R$ {{ i.valor|floatformat:2 }}</span>
+        <form class="absolute bottom-0 mx-10 mb-4 add">
+          <input name="id" type="hidden" value="{{ i.id }}" />
+          Quantidate: <input type='number' name='quantidade' placeholder='1' value='1' min='1' class="w-24" />
+          <button class="cursor-pointer block mx-8 mt-2 bg-green-500 p-2 rounded-full text-white" type="submit">Adicionar <i
+            class="fas fa-shopping-cart"></i></button>
+          </form>
+      </div>
+  </div>
+
+  {% endfor %}
+</div>
+{% endblock content %}
