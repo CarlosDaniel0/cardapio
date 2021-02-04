@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 's8v7=rt$n-1k5li!eu920($lz#n1)47*wqs*1p81k()h&=d=e='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'burguer.herokuapp.com']
 
@@ -128,6 +128,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 else:
-    STATICFILES_DIRS = (
+    STATICFILES_DIRS = [(
         os.path.join(BASE_DIR, 'static')
-    )
+    )]
