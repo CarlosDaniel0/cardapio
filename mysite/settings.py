@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 's8v7=rt$n-1k5li!eu920($lz#n1)47*wqs*1p81k()h&=d=e='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'burguer.herokuapp.com']
 
@@ -121,13 +121,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-if DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-else:
-    STATICFILES_DIRS = [(
-        os.path.join(BASE_DIR, 'static')
-    )]
+STATICFILES_DIRS = [(
+    os.path.join(BASE_DIR, 'static')
+)
