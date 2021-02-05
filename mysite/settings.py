@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 import dj_database_url
-import django_heroku
+#import django_heroku
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,9 +26,9 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = 's8v7=rt$n-1k5li!eu920($lz#n1)47*wqs*1p81k()h&=d=e='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '7eed3536884e.ngrok.io']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -140,4 +140,4 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
